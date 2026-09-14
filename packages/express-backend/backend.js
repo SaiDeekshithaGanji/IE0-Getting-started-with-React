@@ -34,6 +34,13 @@ const users = {
   ],
 };
 
+const findUserByNameAndJob = (name, job) => {
+return users.users_list.filter( (user) =>
+(name === undefined || user.name === name) &&
+(job === undefined || user.job === job)
+);
+};
+
 const findUserByName = (name) => {
   return users["users_list"].filter((user) => user["name"] === name);
 };
@@ -62,9 +69,6 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
 
 app.get("/users", (req, res) => {
   const {name,job} = req.query;
@@ -103,3 +107,9 @@ app.delete("/users/:id", (req, res) => {
 
   res.status(204).send();
 });
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
+});
+
+setInterval(() => {}, 1000);
