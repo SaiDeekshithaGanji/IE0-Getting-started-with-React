@@ -8,16 +8,44 @@ function MyApp() {
   const [characters, setCharacters] = useState([]);
   
 
-  function removeOneCharacter(index) {
-    const updated = characters.filter((character, i) => {
-      return i !== index;
-    });
-    setCharacters(updated);
-  }
+function removeOneCharacter(person) {
+  fetch(`http://localhost:8000/users/${person.id}`, {
+    method: "DELETE",
+  })
+    .then((response) => {
+      if (response.status !== 204) {
+        throw new Error("User was not deleted");
+      }
 
+      setCharacters(
+        characters.filter((character) => character.id !== person.id)
+      );
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+function postUser(person) {
+  return fetch("http://localhost:8000/users", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(person),
+  });
+}
   function updateList(person) {
   postUser(person)
-    .then(() => setCharacters([...characters, person]))
+    .then((response) => {
+      if (response.status !== 201) {
+        throw new Error("User was not created");
+      }
+
+      return response.json();
+    })
+    .then((newUser) => {
+      setCharacters([...characters, newUser]);
+    })
     .catch((error) => {
       console.log(error);
     });

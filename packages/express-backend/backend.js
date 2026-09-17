@@ -64,6 +64,10 @@ const deleteUserById = (id) => {
 
   return users.users_list.splice(index, 1)[0];
 };
+function generateId() {
+  return Math.random().toString(36).slice(2, 8);
+}
+
 
 app.use(cors());
 app.use(express.json());
@@ -95,9 +99,13 @@ app.get("/users/:id", (req, res) => {
 });
 
 app.post("/users", (req, res) => {
-  const userToAdd = req.body;
-  addUser(userToAdd);
-  res.send();
+  const newUser = {
+    ...req.body,
+    id: generateId(),
+  };
+
+  addUser(newUser);
+  res.status(201).send(newUser);
 });
 
 app.delete("/users/:id", (req, res) => {
