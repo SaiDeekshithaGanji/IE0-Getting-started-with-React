@@ -9,7 +9,7 @@ function MyApp() {
   
 
 function removeOneCharacter(person) {
-  fetch(`http://localhost:8000/users/${person.id}`, {
+  fetch(`http://localhost:8000/users/${person._id}`, {
     method: "DELETE",
   })
     .then((response) => {
@@ -18,7 +18,7 @@ function removeOneCharacter(person) {
       }
 
       setCharacters(
-        characters.filter((character) => character.id !== person.id)
+        characters.filter((character) => character._id !== person._id)
       );
     })
     .catch((error) => {
